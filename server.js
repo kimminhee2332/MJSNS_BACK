@@ -2,6 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mjRouter = require("./router/mjRouter");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const PORT = 4000;
 const app = express();
@@ -9,11 +11,16 @@ const app = express();
 app.use(morgan("dev"));
 app.use(cors());
 
+//POST 방식
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use("/api/mj", mjRouter);
+
 app.get("/call/test", (req, res) => {
     console.log("im called anynone!");
 });
 
-app.use("/api/mj", mjRouter);
 
 app.listen(PORT, () => {
     console.log(`MJSNS BACKEND :: ${PORT} SERVER START!`);
